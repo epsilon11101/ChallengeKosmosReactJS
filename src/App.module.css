@@ -1,0 +1,21 @@
+.main {
+    height: 100vh;
+    width: 100vw;
+}
+
+.main .parent {
+    height: calc(100vh - 80px);
+    width: calc(100vw - 80px);
+    position: relative;
+    background: black;
+}
+
+.draggable {
+    position: absolute;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-position: center;
+    position: absolute;
+
+}
