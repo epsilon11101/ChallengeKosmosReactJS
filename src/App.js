@@ -7,6 +7,31 @@ const App = () => {
   const [images, setImages] = useState({});
   const [idCounter, setIdCounter] = useState(1);
 
+  //USE EFFECT UTILIZADO PARA ELIMINAR EL COMPONENTE CADA QUE SE PRESIONA LA TECLA SPR
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      const isDeleted = event.key === "Delete" && selected !== null;
+      if (isDeleted) deleteMoveable(selected);
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    // LIMPIAR EL EVENT LISTENER
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selected]);
+
+  // METODO PARA ELIMINAR EL COMPONENTE DEPENDIENDO DE SU ID
+  const deleteMoveable = (id) => {
+    const updatedMoveables = moveableComponents.filter(
+      (moveable) => moveable.id !== id
+    );
+    setMoveableComponents(updatedMoveables);
+    setIdCounter(idCounter - 1);
+    setSelected(null);
+  };
+  // METODO PARA AGREGAR UN NUEVO COMPONENTE
   const addMoveable = () => {
     // Create a new moveable component and add it to the array
     const COLORS = ["red", "blue", "yellow", "green", "purple"];
@@ -27,6 +52,7 @@ const App = () => {
     ]);
   };
 
+  // METODO PARA ACTUALIZAR EL COMPONENTE
   const updateMoveable = (id, newComponent, updateEnd = false) => {
     const updatedMoveables = moveableComponents.map((moveable, i) => {
       if (moveable.id === id) {
@@ -38,6 +64,7 @@ const App = () => {
     setMoveableComponents(updatedMoveables);
   };
 
+  // METODO PARA ACTUALIZAR EL COMPONENTE CUANDO SE ESTA REDIMENSIONANDO
   const handleResizeStart = (index, e) => {
     console.log("e", e.direction);
     // Check if the resize is coming from the left handle
@@ -119,6 +146,7 @@ const Component = ({
   let parent = document.getElementById("parent");
   let parentBounds = parent?.getBoundingClientRect();
 
+  // METODO PARA ACTUALIZAR EL COMPONENTE CUANDO SE ESTA REDIMENSIONANDO
   const onResize = (e) => {
     // ACTUALIZAR ALTO Y ANCHO
     let newWidth = e.width;
@@ -177,6 +205,7 @@ const Component = ({
     });
   };
 
+  // METODO PARA ACTUALIZAR EL COMPONENTE CUANDO SE ESTA MOVIENDO
   const onDragHandler = async (e) => {
     //NOTE: VALIDAR MOVIMIENTO DENTRO DEL CONTENEDOR
     const positionMaxTop = e.top + height;
@@ -227,6 +256,7 @@ const Component = ({
     );
   };
 
+  // USEEFFECT PARA REALIZAR LA PETICION CADA QUE SE INICIALIZA EL COMPONENTE
   useEffect(() => {
     const getImage = async () => {
       try {
