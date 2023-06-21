@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
 import Moveable from "react-moveable";
 
+import css from "./App.module.css";
+
 const App = () => {
   const [moveableComponents, setMoveableComponents] = useState([]);
   const [selected, setSelected] = useState(null);
@@ -87,17 +89,9 @@ const App = () => {
   };
 
   return (
-    <main style={{ height: "100vh", width: "100vw" }}>
+    <main className={css.main}>
       <button onClick={addMoveable}>Add Moveable1</button>
-      <div
-        id="parent"
-        style={{
-          position: "relative",
-          background: "black",
-          height: "80vh",
-          width: "80vw",
-        }}
-      >
+      <div id="parent" className={css.parent}>
         {moveableComponents.map((item, index) => (
           <Component
             {...item}
@@ -274,17 +268,14 @@ const Component = ({
     <>
       <div
         ref={ref}
-        className="draggable"
+        className={css.draggable}
         id={"component-" + id}
         style={{
-          position: "absolute",
           top: top,
           left: left,
           width: width,
           height: height,
           backgroundImage: `url(${image})`,
-          backgroundSize: "100% 100%",
-          backgroundRepeat: "no-repeat",
         }}
         onClick={() => setSelected(id)}
       />
